@@ -1,0 +1,37 @@
+** INITIAL NOTES **
+* Assumption 1: the analysis is computed at an initial model
+
+* Design: the analysis is instrumented to save intermediate results. 
+Then the initial model can be reanalyzed to obtain corresponding intermediate results.
+(This is similar to having a transition system)
+
+
+* Assumption 2: the initial model may  evolve. 
+If the evolution is trivial (the model does not evolve), the whole initial analysis 
+is reused. Otherwise, the evolution changes the model in a finite number of locations. 
+(* ATTENTION: change in the model is similar to change in the program graph and 
+NOT in the transition system, so it can affect multiple points in the latter. *)
+At each of these, we apply the original analysis and propagate the results
+(following any relation/dependency among the changes), reusing
+intermediate results. Propagation may be done in a Turing-complete computation 
+(unclear how to accomplish this at the moment).
+
+ 
+* top-down vs bottom-up: also related to computational expressiveness?
+for reliability we have the RDG and its bottom-up analysis, which is non-Turing complete ??
+*syntax-guided analysis?
+
+*** MORE RECENT NOTES (Feb. 17)
+-- Assumption 3: What if we assume that the analysis/computation is compositional on the model, whereby compositional 
+means an arithmetic and/or Boolean expression where some subexpressions may potentially be recursive calls?
+Unclear if this is really restrictive (or sufficiently general  / Turing complete, maybe lacking decision construct?)
+
+-- analyses that potentially fit into Assumption 3: tokenCount and all functions assessed in the autolift paper. 
+
+-- potential SOLUTION: wrap model changes into smallest submodels for which the function/analysis is defined, recompute
+the function at these submodels, and propagate the results applying the zipper strategy developed previously, which
+reuses intermediate results.
+
+-- notes: possibly needed to extend/generalize zipper solution to Boolean expressions and to also consider decision expression
+as discussed in the last meeting ( student grade exercise).
+
